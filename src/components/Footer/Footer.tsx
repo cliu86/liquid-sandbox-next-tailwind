@@ -4,7 +4,7 @@
 
 const Footer: React.FC = () => (
   <footer className="relative flex-grow bg-thm-primary-active">
-    <div className="container text-center mx-auto px-ld-24 pt-20 pb-24 max-w-2xl flex flex-col items-center justify-center">
+    <div className="container text-center mx-auto px-ld-24 pt-4 max-w-2xl flex flex-col items-center justify-center">
       <ld-typo class="text-wht mb-ld-12">
         Checkout the source code on
         <a

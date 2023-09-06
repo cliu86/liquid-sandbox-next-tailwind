@@ -1,75 +1,117 @@
 'use client'
-
-// This is a client side React component.
-// We use Liquid Oxygen Web Components with React bindings here.
-// See https://liquid.merck.design/liquid/guides/server-side-rendering/#react-server-components
-
-import Form from '../components/Form/Form'
+import React from 'react';
+import { useLiquid } from '../utils/liquid';
 import {
-  LdBgCells,
-  LdNotification,
-  LdTypo,
-} from '@emdgroup-liquid/liquid/dist/react-define-excluded'
-import type { NextPage } from 'next'
-import * as React from 'react'
-import { useLiquid } from '../utils/liquid'
-
-const successMessages = [
-  'Nice! 👍',
-  'Aaaweeesome! 🙌',
-  'Rock on! 🤘',
-  'How cool is that?! 😎',
-  'Rad! 🤓',
-  'Supersonic! ⚡️',
-  'Magic! ✨',
-  'Groovy baby! 🕺',
-  'Lovely! 🥰',
-  'Smooth! 💆‍♀️',
-  'Mind-blowing! 🤯️',
-  'Excellent! 👌️',
-  'Delicious! 🤤️',
-  'Outa space! 👽',
-]
+  LdTable,
+  LdTableCaption,
+  LdTableToolbar,
+  LdTableHead,
+  LdTableRow,
+  LdTableHeader,
+  LdTableBody,
+  LdTableCell,
+  LdBreadcrumbs,
+  LdCrumb,
+  LdCircularProgress,
+  LdTypo
+} from '@emdgroup-liquid/liquid/dist/react-define-excluded';
+import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
-  useLiquid()
-
-  const [currentTheme, setCurrentTheme] = React.useState<string>('ocean')
-  const handleChangeTheme = React.useCallback(
-    (theme: string) => {
-      document.body.classList.remove(`ld-theme-${currentTheme}`)
-      setCurrentTheme(theme)
-      document.body.classList.add(`ld-theme-${theme}`)
-      setTimeout(() => {
-        const content = successMessages.shift()
-        dispatchEvent(new CustomEvent('ldNotificationClear'))
-        dispatchEvent(
-          new CustomEvent('ldNotificationAdd', {
-            detail: {
-              content: content,
-              type: 'info',
-              timeout: 2000,
-            },
-          })
-        )
-        successMessages.push(content!)
-      }, 500)
-    },
-    [currentTheme]
-  )
-
+  useLiquid();
   return (
     <>
-      <LdNotification placement="bottom" />
-      <LdBgCells className="block absolute inset-0" />
-      <div className="container px-ld-24 pt-ld-40 pb-24 relative max-w-2xl mx-auto">
-        <LdTypo variant="b1" className="text-thm-warning mb-ld-40">
-          Liquid Sandbox App
-        </LdTypo>
-        <Form onChangeTheme={handleChangeTheme} />
+      <div className="container mx-auto p-4">
+        <LdBreadcrumbs >
+          <LdCrumb href="/">Back to Home</LdCrumb>
+          <LdCrumb href="/">Dashboard</LdCrumb>
+        </LdBreadcrumbs>
+        <LdTable className="mt-4">
+          <LdTableToolbar slot="toolbar">
+            <LdTableCaption>
+              Chinese administrative divisions by population in 2017
+            </LdTableCaption>
+          </LdTableToolbar>
+          <LdTableHead style={{ textAlign: 'right' }}>
+            <LdTableRow>
+              <LdTableHeader sortable style={{ textAlign: 'left' }}>
+                Administrative Division
+              </LdTableHeader>
+              <LdTableHeader sortable sortOrder="desc">
+                Total
+              </LdTableHeader>
+              <LdTableHeader sortable>Urban</LdTableHeader>
+              <LdTableHeader sortable>Rural</LdTableHeader>
+            </LdTableRow>
+          </LdTableHead>
+          <LdTableBody style={{ textAlign: 'right' }}>
+            {/* Sample table rows, you can add more rows as needed */}
+            <TableRow
+              division="Mainland China"
+              total="1,485,710,000"
+              urban="831,370,000"
+              rural="564,010,000"
+            />
+            <TableRow
+              division="Guangdong"
+              total="188,690,000"
+              urban="78,020,000"
+              rural="33,670,000"
+            />
+            <TableRow
+              division="Beijing"
+              total="188,690,000"
+              urban="78,020,000"
+              rural="33,670,000"
+            />
+            <TableRow
+              division="Shandong"
+              total="188,690,000"
+              urban="78,020,000"
+              rural="33,670,000"
+            />
+            <TableRow
+              division="Shanghai"
+              total="188,690,000"
+              urban="78,020,000"
+              rural="33,670,000"
+            />
+            {/* Add more rows here */}
+          </LdTableBody>
+        </LdTable>
+
+        <LdCircularProgress aria-valuenow={125}>
+          <LdTypo variant="b6" style={{ color: 'var(--ld-thm-error)' }}>125%</LdTypo>
+          <LdTypo variant="label-s">complete</LdTypo>
+        </LdCircularProgress>
+        <LdCircularProgress aria-valuenow={175}>
+          <LdTypo variant="b6" style={{ color: 'var(--ld-thm-error)' }}>175%</LdTypo>
+          <LdTypo variant="label-s">complete</LdTypo>
+        </LdCircularProgress>
+        <LdCircularProgress aria-valuenow={225}>
+          <LdTypo variant="b6" style={{ color: 'var(--ld-thm-error)' }}>225%</LdTypo>
+          <LdTypo variant="label-s">complete</LdTypo>
+        </LdCircularProgress>
       </div>
     </>
-  )
+  );
+};
+
+interface TableRowProps {
+  division: string;
+  total: string;
+  urban: string;
+  rural: string;
 }
 
-export default Home
+// Create a separate TableRow component for better organization
+const TableRow: React.FC<TableRowProps> = ({ division, total, urban, rural }) => (
+  <LdTableRow>
+    <LdTableCell style={{ textAlign: 'left' }}>{division}</LdTableCell>
+    <LdTableCell>{total}</LdTableCell>
+    <LdTableCell>{urban}</LdTableCell>
+    <LdTableCell>{rural}</LdTableCell>
+  </LdTableRow>
+);
+
+export default Home;
